@@ -1,15 +1,10 @@
 # !/bin/bash
-#
-# Configure your iptables to allow IPs from Cloudflare only.
-# For users whose HTTP server is directly exposed to the host 80/443.
-#
-# author: kingcc <eof@null.net>
 
 iptables  -N cloudflare-only
 ip6tables -N cloudflare-only
 
-iptables  -A INPUT -p tcp -m multiport --dports http,https -j cloudflare-only
-ip6tables -A INPUT -p tcp -m multiport --dports http,https -j cloudflare-only
+iptables  -I INPUT 1 -p tcp -m multiport --dports http,https -j cloudflare-only
+ip6tables -I INPUT 1 -p tcp -m multiport --dports http,https -j cloudflare-only
 
 # https://www.cloudflare.com/ips
 for i in `curl https://www.cloudflare.com/ips-v4`; do
